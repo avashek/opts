@@ -1,0 +1,102 @@
+.App{
+  display : flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+.Calculator{
+  border : 1px solid black;
+  display : flex;
+  flex-flow: row wrap;
+  width : 400px;
+}
+.display{
+  background-color: #398;
+  color : #333;
+  flex-basis : 400px;
+  display : flex;
+  flex-flow: row wrap;
+}
+.display > label:first-child{
+  flex-basis : 10px;
+  
+}
+.display > label:nth-child(2){
+  flex-basis : 385px;
+  text-align : right;
+  font-size : 2.2em;
+}
+.display > label:last-child{
+  text-align : right ;
+  font-size : 2em;
+  flex-basis : 390px;
+}
+.numbers{
+  background-color :peachpuff;
+  flex-basis : 280px;
+  padding : 5px;
+
+  display : flex;
+  flex-flow : row wrap;
+  align-items : flex-start;
+}
+.numbers > button {
+  width : 80px;
+  height : 80px;
+  font-size : 1.6em;
+  flex-grow : 1;
+}
+.numbers > button:nth-child(10){
+  width : 170px;
+}
+
+.main-keys {
+  display : flex;
+  flex-flow : row nowrap;
+}
+.operators{
+  background : aqua;
+  width : 110px;
+  padding : 5px;
+  flex-basis : 260px;
+  display : flex;
+  flex-flow : row wrap;
+  
+}
+.operators > button {
+  width : 45px;
+  font-size: 1.5em;
+
+  flex-grow :1;
+}
+.operators > button:first-child {
+  flex-grow: 2;
+}
+.side-keys{
+  display : flex;
+  flex-flow : column wrap;
+}
+.specialkeys{
+  padding : 10px;
+  /*background : coral;*/
+  width : 100px;
+  display : flex;
+  flex-flow : column wrap;
+}
+.specialkeys > button {
+  width : 90px;
+  height : 30px;
+  margin-bottom : 5px;
+  border-radius : 100%;
+  border : 2px;
+  border-bottom : 2px solid #000;
+  background-color : firebrick;
+  color : #fff;
+}
+.button{
+  margin : 5px;
+  
+} 
+.button:focus{
+  
+}
