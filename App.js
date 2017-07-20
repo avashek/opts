@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
+
 function Display(props){
+  // var res = props.result;
+  // res = res.split('.');
+  // while(res[0].length + res[1].length >= 8 && props.decimalPoint)
+  // {
+  //   res[1].pop();
+  // }
+  // if(res[1].length >= 8 && !props.decimalPoint)
+  // {
+  //   res = "Number too big";
+  // }
   return (
     <div className="display">
       <label className="operator">{props.op}</label>
@@ -13,7 +24,7 @@ function Display(props){
 function Numbers(props){
   var numbers = ['1','2','3','4','5','6','7','8','9','0','.'];
   var numArray = [];
-  numbers.map((num,i) => numArray.push(<button key={i} onClick={()=>props.handleNumber(num)}>{num}</button>));
+  numbers.map((num,i) => numArray.push(<button key={i} className="button number-button" onClick={()=>props.handleNumber(num)}>{num}</button>));
   return (
     <div className="numbers">
       {numArray}
@@ -24,7 +35,7 @@ function Numbers(props){
 function Operators(props){
   var operators = ['+','-','*','/','='];
   var opArray = [];
-  operators.map((oper,i) => opArray.push(<button key={i} onClick={()=>props.handleOperator(oper)}>{oper}</button>))
+  operators.map((oper,i) => opArray.push(<button key={i} className="button operator-button" onClick={()=>props.handleOperator(oper)}>{oper}</button>))
   return (
     <div className="operators">
       {opArray}
@@ -34,14 +45,14 @@ function Operators(props){
 function SpecialKeys(props){
   var specialkeys = ['AC','<-',];
   var specialArray = [];
-  specialkeys.map((sp,i)=>specialArray.push(<button key={i} onClick={()=> props.handleSpecial(sp)}>{sp}</button>))
+  specialkeys.map((sp,i)=>specialArray.push(<button key={i} className="button special-button" onClick={()=> props.handleSpecial(sp)}>{sp}</button>))
   return (
-    <div className="'special-keys">
+    <div className="specialkeys">
       {specialArray}
     </div>
   )
 }
-class App extends Component {
+class Calculator extends Component {
   static initialize() {
     return {
       result : '0',
@@ -55,7 +66,7 @@ class App extends Component {
   constructor()
   {
     super();
-    this.state = App.initialize();
+    this.state = Calculator.initialize();
     this.handleNumber = this.handleNumber.bind(this);
     this.handleOperator = this.handleOperator.bind(this);
     this.computeResult = this.computeResult.bind(this);
@@ -64,7 +75,7 @@ class App extends Component {
   handleSpecial(sp){
     switch(sp){
       case 'AC' : {
-        this.setState(App.initialize());
+        this.setState(Calculator.initialize());
         break;
       }
       case '<-' : {
@@ -116,7 +127,7 @@ class App extends Component {
         }
         break;
       }
-      default : console.log("hAHa i'm 12 bTw");break;
+      default : break;
     }
     this.setState({
           result : res+'',
@@ -143,32 +154,45 @@ class App extends Component {
     
   }
   handleNumber(num){
-    if(num === '.'){
-      this.setState({
-        decimalPoint : true,
-      })
+    if(this.state.value.split('.').join('').length <= 8){
+      if(num === '.'){
+        this.setState({
+          decimalPoint : true,
+        })
+      }
+      if(this.state.decimalPoint && num === '.'){
+        num = '';
+      }
+      this.setState(prevState => ({
+        value : prevState.value === '0' && num!== '.'? num : prevState.value.concat(num),
+        computed :false,
+      }))
     }
-    if(this.state.decimalPoint && num === '.'){
-      num = '';
-    }
-    this.setState(prevState => ({
-      value : prevState.value === '0' && num!== '.'? num : prevState.value.concat(num),
-      computed :false,
-    }))
   }
   render() {
-    const {result,op,value,} = this.state;
+    const {result,op,value,decimalPoint} = this.state;
     return (
-      <div className="App">
-        <Display result={result} op={op} value={value}/>
-        <SpecialKeys handleSpecial={this.handleSpecial}/>
-        <div className="buttons">
+      <div className="Calculator">
+        <Display result={result} op={op} value={value} decimalPoint={decimalPoint}/>
+        <div className="main-keys">
           <Numbers handleNumber={this.handleNumber} />
-          <Operators handleOperator={this.handleOperator}/>
+          <div className="side-keys">
+            <SpecialKeys handleSpecial={this.handleSpecial}/>
+            <Operators handleOperator={this.handleOperator}/>
+        </div>
         </div>
       </div>
     );
   }
 }
 
+class App extends Component{
+  render() {
+    return (
+      <div className="App">
+        <Calculator />
+      </div>
+    )
+  }
+}
 export default App;
